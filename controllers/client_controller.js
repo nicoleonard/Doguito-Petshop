@@ -1,3 +1,5 @@
+import { clientServices } from "../service/client_service.js";
+
 const crearNuevaLinea = (nombre,email) => {
     const linea = document.createElement("tr")
     const contenido =`
@@ -28,27 +30,9 @@ const crearNuevaLinea = (nombre,email) => {
 
 const table = document.querySelector("[data-table]")
 
-
-//Abrir http (metodo,url)
-//CRUD - metodos http
-//Create - POST
-//Read - GET
-//Update - PUT/PATCH
-//Delete - DELETE
-
-const listaClientes = () => {
-fetch("http://localhost:3000/perfil").then((respuesta) => respuesta.json());
-};
-
-listaClientes().then((data) => {
+clientServices.listaClientes().then((data) => {
     data.forEach( perfil => {
         const nuevaLinea = crearNuevaLinea(perfil.nombre, perfil.email)
         table.appendChild(nuevaLinea);
     });
 }).catch((error) => alert("Ocurrió un error"));
-
-
-
-
-
-
