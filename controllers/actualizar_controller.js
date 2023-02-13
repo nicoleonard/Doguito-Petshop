@@ -2,7 +2,9 @@ import { clientServices } from "../service/client_service.js";
 
 const formulario = document.querySelector("[data-form]");
 
-const obtenerInformacion = () => {
+//uso de palabra reservada async/await. Como practica actualizar todos los .then() y .catch() Esta es una buena manera mas limpia y moderna de realizar llamadas a backend o manejar promesas
+
+const obtenerInformacion = async () => {
     const url = new URL(window.location);
     const id = url.searchParams.get("id");
 
@@ -12,10 +14,21 @@ const obtenerInformacion = () => {
 
     const nombre = document.querySelector("[data-nombre]");
     const email = document.querySelector("[data-email]");
-    clientServices.detalleCliente(id).then(perfil => {
-        nombre.value = perfil.nombre;
-        email.value = perfil.email;
-    });
+
+    try{
+        const perfil = await clientServices.detalleCliente(id)
+        if(perfil.nombre && perfil.email){
+            nombre.value = perfil.nombre;
+            email.value = perfil.email;
+        }else{
+            throw new Error();
+        }
+    }catch(error){
+        window.location.href = "/screens/error.html";
+    }
+
+
+
 };
 
 obtenerInformacion();
